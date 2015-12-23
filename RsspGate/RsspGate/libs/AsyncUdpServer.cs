@@ -47,7 +47,7 @@ namespace RsspGate.libs
             Port = listenPort;
             this.Encoding = Encoding.Default;
         }
-
+        
         #endregion
 
         #region Properties
@@ -82,10 +82,17 @@ namespace RsspGate.libs
             if (!IsRunning)
             {
                 IsRunning = true;
-                listener = new UdpClient(new IPEndPoint(Address, Port));
-                listener.Client.ReceiveBufferSize = 1024 * 1024 * 16;
-                //listener.AllowNatTraversal(true);
-                listener.BeginReceive(new AsyncCallback(HandleUdpReceived), listener);
+                try
+                {
+                    listener = new UdpClient(new IPEndPoint(this.Address, Port));
+                    listener.Client.ReceiveBufferSize = 1024 * 1024 * 16;
+                    //listener.AllowNatTraversal(true);
+                    listener.BeginReceive(new AsyncCallback(HandleUdpReceived), listener);
+                }
+                catch(Exception e)
+                {
+                    throw e;
+                }
             }
             return this;
         }

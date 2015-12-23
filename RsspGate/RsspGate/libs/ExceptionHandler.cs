@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace RsspGate.libs
 {
@@ -17,6 +18,9 @@ namespace RsspGate.libs
             {
                 //Console.WriteLine("You did not catch an exception.");
                 //throw e;   // re-throwing is the default behavior
+                MessageBox.Show(e.Message);
+                Runtime.IsRunning = false;
+                Application.Exit();
             }
         }
     }
