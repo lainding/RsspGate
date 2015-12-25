@@ -43,6 +43,7 @@ namespace RsspGate
                 {
                     IPAddress ip = IPAddress.Parse(i.ip);
                     AsyncUdpServer inter = new AsyncUdpServer(ip, i.port);
+                    inter.DatagramReceived += InterfaceProcess.ProcessUDPInput;
                     interfaces.Add(inter);
                 }
                 catch(Exception e)

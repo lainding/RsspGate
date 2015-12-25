@@ -53,10 +53,13 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="InterfaceProcess.cs" />
     <Compile Include="libs\AsyncUdpClient.cs" />
     <Compile Include="libs\AsyncUdpServer.cs" />
+    <Compile Include="libs\DataFrame.cs" />
     <Compile Include="libs\ExceptionHandler.cs" />
     <Compile Include="libs\JSON.cs" />
+    <Compile Include="libs\Rssp1.cs" />
     <Compile Include="libs\UdpEvent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,6 +79,7 @@
     <None Include="config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="documents\RSSP-I 铁路安全通信协议.doc" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
