@@ -57,6 +57,7 @@
     <Compile Include="libs\AsyncUdpClient.cs" />
     <Compile Include="libs\AsyncUdpServer.cs" />
     <Compile Include="libs\DataFrame.cs" />
+    <Compile Include="libs\DataStream.cs" />
     <Compile Include="libs\ExceptionHandler.cs" />
     <Compile Include="libs\JSON.cs" />
     <Compile Include="libs\Rssp1.cs" />
