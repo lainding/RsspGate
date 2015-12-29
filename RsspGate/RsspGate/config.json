@@ -1,12 +1,37 @@
 ﻿{
-	"interfaces": [
+	"gates": [
 		{
+			"name": "udp1",
 			"ip": "127.0.0.1",
-			"port": 9001
+			"port": 9001,
+			"type": "udp"
 		},
 		{
+			"name": "udp2",
 			"ip": "127.0.0.1",
-			"port": 9002
+			"port": 9002,
+			"type": "udp"
+		}
+	],
+	"devices": [
+		{
+			"name": "ccs",
+			"ip": "127.0.0.1",
+			"port": 8080
+		},
+		{
+			"name": "ctc",
+			"ip": "127.0.0.1",
+			"port": 8081
+		}
+	],
+	"routes": [
+		{
+			"from": "ccs",
+			"through": "udp1",
+			"by": "udp2",
+			"to": "ctc",
+			"process": ["direct"]
 		}
 	]
 }

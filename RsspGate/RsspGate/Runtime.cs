@@ -11,7 +11,8 @@ namespace RsspGate
 {
     static class Runtime
     {
-        public static List<AsyncUdpServer> interfaces = new List<AsyncUdpServer>();
+        public static List<Gate> gates = new List<Gate>();
+        public static List<Device> devices = new List<Device>();
 
         private static bool isRunning = true;
         public static bool IsRunning
@@ -31,25 +32,45 @@ namespace RsspGate
             {
                 return;
             }
-            var index = 0;
-            foreach (var i in cfg.interfaces)
+            foreach (var g in cfg.gates)
             {
-                i.index = index++;
-                if (i.name == null)
-                {
-                    i.name = "interface." + i.index;
-                }
                 try
                 {
-                    IPAddress ip = IPAddress.Parse(i.ip);
-                    AsyncUdpServer inter = new AsyncUdpServer(ip, i.port);
-                    inter.DatagramReceived += InterfaceProcess.ProcessUDPInput;
-                    interfaces.Add(inter);
+                    switch (g.type.ToLower())
+                    {
+                        case "udp":
+                            {
+                                IPAddress ip = IPAddress.Parse(g.ip);
+                                AsyncUdpServer inter = new AsyncUdpServer(ip, g.port);
+                                inter.DatagramReceived += InterfaceProcess.ProcessUDPInput;
+                                gates.Add(inter);
+                                break;
+                            }
+                        default:
+                            throw new ArgumentException("Unknown gate type.");
+                    }
                 }
-                catch(Exception e)
+                catch(Exception ex)
                 {
-                    ExceptionHandler.Handle(e);
+                    ExceptionHandler.Handle(ex);
                 }
+            }
+            foreach (var d in cfg.devices)
+            {
+                try
+                {
+                    IPAddress ip = IPAddress.Parse(d.ip);
+                    Device dv = new Device(d.name, ip, d.port);
+                    devices.Add(dv);
+                }
+                catch(Exception ex)
+                {
+                    ExceptionHandler.Handle(ex);
+                }
+            }
+            foreach(var r in cfg.routes)
+            {
+
             }
         }
     }

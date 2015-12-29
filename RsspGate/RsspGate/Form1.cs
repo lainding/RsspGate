@@ -20,7 +20,7 @@ namespace RsspGate
 
         private void button1_Click(object sender, EventArgs e)
         {
-            foreach (var inter in Runtime.interfaces)
+            foreach (var inter in Runtime.gates)
             {
                 try
                 {

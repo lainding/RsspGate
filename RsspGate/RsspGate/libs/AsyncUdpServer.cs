@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RsspGate.libs
 {
-    class AsyncUdpServer : IDisposable
+    class AsyncUdpServer : Gate, IDisposable
     {
         #region Fields
 
@@ -77,7 +77,7 @@ namespace RsspGate.libs
         /// 启动服务器
         /// </summary>
         /// <returns>异步UDP服务器</returns>
-        public AsyncUdpServer Start()
+        public override Gate Start()
         {
             if (!IsRunning)
             {

@@ -54,12 +54,15 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="InterfaceProcess.cs" />
-    <Compile Include="libs\AsyncUdpClient.cs" />
     <Compile Include="libs\AsyncUdpServer.cs" />
     <Compile Include="libs\DataFrame.cs" />
     <Compile Include="libs\DataStream.cs" />
+    <Compile Include="libs\Device.cs" />
     <Compile Include="libs\ExceptionHandler.cs" />
+    <Compile Include="libs\Gate.cs" />
     <Compile Include="libs\JSON.cs" />
+    <Compile Include="libs\operation\directe.cs" />
+    <Compile Include="libs\operation\Operation.cs" />
     <Compile Include="libs\Rssp1.cs" />
     <Compile Include="libs\UdpEvent.cs" />
     <Compile Include="Program.cs" />
