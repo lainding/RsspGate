@@ -11,14 +11,14 @@ namespace RsspGate.libs
     /// 接收到数据报文事件参数
     /// </summary>
     /// <typeparam name="T">报文类型</typeparam>
-    public class UdpDatagramReceivedEventArgs<T> : EventArgs
+    public class DatagramReceivedEventArgs<T> : EventArgs
     {
         /// <summary>
         /// 接收到数据报文事件参数
         /// </summary>
         /// <param name="tcpClient">客户端</param>
         /// <param name="datagram">报文</param>
-        public UdpDatagramReceivedEventArgs(T datagram, IPEndPoint remoteendpoint)
+        public DatagramReceivedEventArgs(T datagram, IPEndPoint remoteendpoint)
         {
             Datagram = datagram;
             RemoteEndPoint = remoteendpoint;
@@ -32,9 +32,9 @@ namespace RsspGate.libs
         public IPEndPoint RemoteEndPoint { get; private set; }
     }
 
-    public class UdpDatagramSendedEventArgs<T> : EventArgs
+    public class DatagramSendedEventArgs<T> : EventArgs
     {
-        public UdpDatagramSendedEventArgs(T datagram, IPEndPoint remoteendpoint)
+        public DatagramSendedEventArgs(T datagram, IPEndPoint remoteendpoint)
         {
             Datagram = datagram;
             RemoteEndPoint = remoteendpoint;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RsspGate.libs.operation
 {
-    class directe : Operation
+    class direct : Operation
     {
         public override byte[] Operate(byte[] stream)
         {

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RsspGate.config;
 using RsspGate.libs;
+using RsspGate.libs.operation;
 
 namespace RsspGate
 {
@@ -41,7 +42,8 @@ namespace RsspGate
                         case "udp":
                             {
                                 IPAddress ip = IPAddress.Parse(g.ip);
-                                AsyncUdpServer inter = new AsyncUdpServer(ip, g.port);
+                                Gate inter = new AsyncUdpServer(ip, g.port);
+                                inter.Name = g.name;
                                 inter.DatagramReceived += InterfaceProcess.ProcessUDPInput;
                                 gates.Add(inter);
                                 break;
@@ -70,8 +72,73 @@ namespace RsspGate
             }
             foreach(var r in cfg.routes)
             {
-
+                try
+                {
+                    var from = devices.Where(ra => ra.Name == r.from);
+                    var to = devices.Where(ra => ra.Name == r.to);
+                    if (r.through == null && cfg.gates.Count != 1)
+                    {
+                        throw new ArgumentException("Miss Through or By Arguments.");
+                    }
+                    else
+                    {
+                        if (r.through == null)
+                        {
+                            r.through = cfg.gates[0].name;
+                        }
+                    }
+                    if (r.by == null && cfg.gates.Count != 1)
+                    {
+                        throw new ArgumentException("Miss Through or By Arguments.");
+                    }
+                    else
+                    {
+                        if (r.by == null)
+                        {
+                            r.by = cfg.gates[0].name;
+                        }
+                    }
+                    var through = gates.Where(ra => ra.Name == r.through);
+                    var by = gates.Where(ra => ra.Name == r.by);
+                    if (through.Count()!=1 || by.Count()!=1)
+                    {
+                        throw new ArgumentException("Multi same name in gates.");
+                    }
+                    else
+                    {
+                        foreach (var fi in from)
+                        {
+                            foreach(var ti in to)
+                            {
+                                Route route = new Route(fi, through.ToArray()[0], ti, by.ToArray()[0]);
+                                Operation oper = null;
+                                foreach(var pi in r.process)
+                                {
+                                    var tmp = OperationFactory.GetOperation(pi);
+                                    if (tmp != null)
+                                    {
+                                        if (oper == null)
+                                        {
+                                            oper = tmp;
+                                        }
+                                        else
+                                        {
+                                            oper.SetNextOperation(tmp);
+                                        }
+                                    }
+                                }
+                                route.Process = oper;
+                                through.ToArray()[0].AddRoute(route);
+                            }
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    ExceptionHandler.Handle(ex);
+                }
             }
         }
+
     }
 }

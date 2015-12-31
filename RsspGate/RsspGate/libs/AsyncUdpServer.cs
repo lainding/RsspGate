@@ -124,7 +124,7 @@ namespace RsspGate.libs
                     UdpClient listener = ar.AsyncState as UdpClient;
                     IPEndPoint endPoint = null;
                     byte[] receiveBytes = listener.EndReceive(ar, ref endPoint);
-                    RaiseDatagramReceived(listener, receiveBytes, endPoint);
+                    RaiseDatagramReceived(this, receiveBytes, endPoint);
                     RasiePlaintextReceived(listener, receiveBytes, endPoint);
                     listener.BeginReceive(new AsyncCallback(HandleUdpReceived), listener);
                 }
@@ -137,17 +137,17 @@ namespace RsspGate.libs
         /// <summary>
         /// 接收到数据报文事件
         /// </summary>
-        public event EventHandler<UdpDatagramReceivedEventArgs<byte[]>> DatagramReceived;
+        //public event EventHandler<DatagramReceivedEventArgs<byte[]>> DatagramReceived;
         /// <summary>
         /// 接收到数据报文明文事件
         /// </summary>
-        public event EventHandler<UdpDatagramReceivedEventArgs<string>> PlaintextReceived;
+        public event EventHandler<DatagramReceivedEventArgs<string>> PlaintextReceived;
         /// <summary>
         /// 发送数据报文事件完毕
         /// </summary>
-        public event EventHandler<UdpDatagramSendedEventArgs<byte[]>> DatagramSended;
+        public event EventHandler<DatagramSendedEventArgs<byte[]>> DatagramSended;
 
-        private void RaiseDatagramSended(UdpDatagramSendedEventArgs<byte[]> args)
+        private void RaiseDatagramSended(DatagramSendedEventArgs<byte[]> args)
         {
             if (DatagramSended != null)
             {
@@ -155,20 +155,20 @@ namespace RsspGate.libs
             }
         }
 
-        private void RaiseDatagramReceived(UdpClient sender, byte[] datagram, IPEndPoint endpoint)
-        {
-            if (DatagramReceived != null)
-            {
-                DatagramReceived(sender, new UdpDatagramReceivedEventArgs<byte[]>(datagram, endpoint));
-            }
-        }
+        //private void RaiseDatagramReceived(UdpClient sender, byte[] datagram, IPEndPoint endpoint)
+        //{
+        //    if (DatagramReceived != null)
+        //    {
+        //        DatagramReceived(sender, new DatagramReceivedEventArgs<byte[]>(datagram, endpoint));
+        //    }
+        //}
 
         private void RasiePlaintextReceived(UdpClient sender, byte[] datagram, IPEndPoint endpoint)
         {
             if (PlaintextReceived != null)
             {
                 string plaintext = this.Encoding.GetString(datagram);
-                PlaintextReceived(sender, new UdpDatagramReceivedEventArgs<string>(plaintext, endpoint));
+                PlaintextReceived(sender, new DatagramReceivedEventArgs<string>(plaintext, endpoint));
             }
         }
         #endregion
@@ -196,7 +196,7 @@ namespace RsspGate.libs
             if (datagram == null)
                 throw new ArgumentNullException("datagram");
             
-            listener.BeginSend(datagram, datagram.Length, ipendpoint, new AsyncCallback(HandleDatagramSendFinish), new UdpDatagramSendedEventArgs<byte[]>(datagram, ipendpoint));
+            listener.BeginSend(datagram, datagram.Length, ipendpoint, new AsyncCallback(HandleDatagramSendFinish), new DatagramSendedEventArgs<byte[]>(datagram, ipendpoint));
         }
 
         private void HandleDatagramSendFinish(IAsyncResult ar)
@@ -205,7 +205,7 @@ namespace RsspGate.libs
             {
                 if (ar.IsCompleted)
                 {
-                    UdpDatagramSendedEventArgs<byte[]> args = ar.AsyncState as UdpDatagramSendedEventArgs<byte[]>;
+                    DatagramSendedEventArgs<byte[]> args = ar.AsyncState as DatagramSendedEventArgs<byte[]>;
                     listener.EndSend(ar);
                     RaiseDatagramSended(args);
                 }
