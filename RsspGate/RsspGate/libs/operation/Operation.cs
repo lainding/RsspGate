@@ -15,5 +15,6 @@ namespace RsspGate.libs.operation
         }
 
         public abstract byte[] Operate(byte[] stream);
+        public abstract void Init();
     }
 }

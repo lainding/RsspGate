@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -10,7 +11,7 @@ namespace RsspGate
 {
     class InterfaceProcess
     {
-        public static void ProcessUDPInput(object sender, DatagramReceivedEventArgs<byte[]> args)
+        public static void ProcessInput(object sender, DatagramReceivedEventArgs<byte[]> args)
         {
             Gate gate = sender as Gate;
             IPAddress ip = args.RemoteEndPoint.Address;
@@ -19,7 +20,11 @@ namespace RsspGate
             var vrs = rts.Where(rs => rs.From.IP.Equals(ip) && rs.From.Port == port);
             foreach (var vr in vrs)
             {
-
+                if (vr.Process != null)
+                {
+                    var result = vr.Process.Operate(args.Datagram);
+                    vr.By.Send(vr.To, result);
+                }
             }
         }
     }

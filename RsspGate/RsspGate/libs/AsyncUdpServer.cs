@@ -102,7 +102,7 @@ namespace RsspGate.libs
         /// 停止服务器
         /// </summary>
         /// <returns>异步UDP服务器</returns>
-        public AsyncUdpServer Stop()
+        public override Gate Stop()
         {
             if (IsRunning)
             {
@@ -175,7 +175,7 @@ namespace RsspGate.libs
 
         #region Send
 
-        public void Send(IPAddress ipaddress, int port, byte[] datagram)
+        protected void Send(IPAddress ipaddress, int port, byte[] datagram)
         {
             Send(new IPEndPoint(ipaddress, port), datagram);
         }
@@ -185,7 +185,7 @@ namespace RsspGate.libs
         /// </summary>
         /// <param name="ipendpoint">对端地址</param>
         /// <param name="datagram">报文</param>
-        public void Send(IPEndPoint ipendpoint, byte[] datagram)
+        protected void Send(IPEndPoint ipendpoint, byte[] datagram)
         {
             if (!IsRunning)
                 throw new InvalidProgramException("This UDP server has not been started.");
@@ -217,12 +217,12 @@ namespace RsspGate.libs
         /// </summary>
         /// <param name="ipendpoint">对端地址</param>
         /// <param name="datagram">报文</param>
-        public void Send(IPEndPoint ipendpoint, string datagram)
+        protected void Send(IPEndPoint ipendpoint, string datagram)
         {
             Send(ipendpoint, this.Encoding.GetBytes(datagram));
         }
 
-        public void Send(IPAddress ipaddress, int port, string datagram)
+        protected void Send(IPAddress ipaddress, int port, string datagram)
         {
             Send(new IPEndPoint(ipaddress, port), datagram);
         }
@@ -260,6 +260,11 @@ namespace RsspGate.libs
 
                 disposed = true;
             }
+        }
+
+        public override void Send(Device device, byte[] data)
+        {
+            Send(device.IP, device.Port, data);
         }
         #endregion
 

@@ -23,6 +23,11 @@
 			"name": "ctc",
 			"ip": "127.0.0.1",
 			"port": 8081
+		},
+		{
+			"name": "ctc2",
+			"ip": "127.0.0.1",
+			"port": 8082
 		}
 	],
 	"routes": [
@@ -31,6 +36,13 @@
 			"through": "udp1",
 			"by": "udp2",
 			"to": "ctc",
+			"process": ["direct"]
+		},
+		{
+			"from": "ccs",
+			"through": "udp1",
+			"by": "udp1",
+			"to": "ctc2",
 			"process": ["direct"]
 		}
 	]

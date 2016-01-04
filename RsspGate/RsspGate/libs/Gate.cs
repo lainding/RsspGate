@@ -26,6 +26,7 @@ namespace RsspGate.libs
             routes.Add(route);
         }
         public abstract Gate Start();
+        public abstract Gate Stop();
         public event EventHandler<DatagramReceivedEventArgs<byte[]>> DatagramReceived;
         protected void RaiseDatagramReceived(Gate sender, byte[] datagram, IPEndPoint endpoint)
         {
@@ -34,5 +35,7 @@ namespace RsspGate.libs
                 DatagramReceived(sender, new DatagramReceivedEventArgs<byte[]>(datagram, endpoint));
             }
         }
+
+        public abstract void Send(Device device, byte[] data);
     }
 }

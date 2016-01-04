@@ -44,7 +44,7 @@ namespace RsspGate
                                 IPAddress ip = IPAddress.Parse(g.ip);
                                 Gate inter = new AsyncUdpServer(ip, g.port);
                                 inter.Name = g.name;
-                                inter.DatagramReceived += InterfaceProcess.ProcessUDPInput;
+                                inter.DatagramReceived += InterfaceProcess.ProcessInput;
                                 gates.Add(inter);
                                 break;
                             }
