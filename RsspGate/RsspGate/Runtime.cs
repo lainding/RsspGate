@@ -27,13 +27,13 @@ namespace RsspGate
                 isRunning = value;
             }
         }
-        public static void ProcessConfig(config.config cfg)
+        public static void ProcessConfig(dynamic cfg)
         {
             if (cfg == null)
             {
                 return;
             }
-            foreach (var g in cfg.gates)
+            foreach (gate g in cfg.gates)
             {
                 try
                 {
@@ -57,7 +57,7 @@ namespace RsspGate
                     ExceptionHandler.Handle(ex);
                 }
             }
-            foreach (var d in cfg.devices)
+            foreach (device d in cfg.devices)
             {
                 try
                 {
@@ -112,18 +112,30 @@ namespace RsspGate
                             {
                                 Route route = new Route(fi, through.ToArray()[0], ti, by.ToArray()[0]);
                                 Operation oper = null;
-                                foreach(var pi in r.process)
+                                foreach(dynamic pi in r.process)
                                 {
-                                    var tmp = OperationFactory.GetOperation(pi);
-                                    if (tmp != null)
+                                    if (pi.name())
                                     {
-                                        if (oper == null)
+                                        var tmp = OperationFactory.GetOperation(pi.name);
+                                        parameter param = null;
+                                        if (pi.parameters())
                                         {
-                                            oper = tmp;
+                                            param = OperationFactory.GetParameter(pi.name, pi.parameters);
                                         }
-                                        else
+                                        if (tmp != null)
                                         {
-                                            oper.SetNextOperation(tmp);
+                                            if (oper == null)
+                                            {
+                                                oper = tmp;
+                                            }
+                                            else
+                                            {
+                                                oper.SetNextOperation(tmp);
+                                            }
+                                            if (param != null)
+                                            {
+                                                tmp.Init(param);
+                                            }
                                         }
                                     }
                                 }

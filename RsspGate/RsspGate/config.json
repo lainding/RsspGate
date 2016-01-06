@@ -36,14 +36,22 @@
 			"through": "udp1",
 			"by": "udp2",
 			"to": "ctc",
-			"process": ["direct"]
+			"process": [{
+				"name": "insert",
+				"parameters": {
+					"position": "start"
+					"content": ""
+				}
+			}]
 		},
 		{
 			"from": "ccs",
 			"through": "udp1",
 			"by": "udp1",
 			"to": "ctc2",
-			"process": ["direct"]
+			"process": [{
+				"name": "direct"
+			}]
 		}
 	]
 }

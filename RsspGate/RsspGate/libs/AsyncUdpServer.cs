@@ -12,6 +12,7 @@ namespace RsspGate.libs
         #region Fields
 
         private UdpClient listener;
+        private UdpClient sender;
         private bool disposed = false;
 
         #endregion
@@ -85,6 +86,7 @@ namespace RsspGate.libs
                 try
                 {
                     listener = new UdpClient(new IPEndPoint(this.Address, Port));
+                    sender = new UdpClient();
                     listener.Client.ReceiveBufferSize = 1024 * 1024 * 16;
                     //listener.AllowNatTraversal(true);
                     listener.BeginReceive(new AsyncCallback(HandleUdpReceived), listener);
@@ -108,6 +110,7 @@ namespace RsspGate.libs
             {
                 IsRunning = false;
                 listener.Close();
+                sender.Close();
             }
             return this;
         }
@@ -123,10 +126,21 @@ namespace RsspGate.libs
                 {
                     UdpClient listener = ar.AsyncState as UdpClient;
                     IPEndPoint endPoint = null;
-                    byte[] receiveBytes = listener.EndReceive(ar, ref endPoint);
-                    RaiseDatagramReceived(this, receiveBytes, endPoint);
-                    RasiePlaintextReceived(listener, receiveBytes, endPoint);
-                    listener.BeginReceive(new AsyncCallback(HandleUdpReceived), listener);
+                    try
+                    {
+                        byte[] receiveBytes = listener.EndReceive(ar, ref endPoint);
+                        RaiseDatagramReceived(this, receiveBytes, endPoint);
+                        //RasiePlaintextReceived(listener, receiveBytes, endPoint);
+                        //listener.BeginReceive(new AsyncCallback(HandleUdpReceived), listener);
+                        listener.BeginReceive(new AsyncCallback(HandleUdpReceived), listener);
+                    }
+                    catch(Exception ex)
+                    {
+                        if (!(ex is SocketException))
+                        {
+                            throw ex;
+                        }
+                    }
                 }
             }
         }
@@ -195,8 +209,10 @@ namespace RsspGate.libs
 
             if (datagram == null)
                 throw new ArgumentNullException("datagram");
+
+            //listener.Send(datagram, datagram.Length, ipendpoint);
             
-            listener.BeginSend(datagram, datagram.Length, ipendpoint, new AsyncCallback(HandleDatagramSendFinish), new DatagramSendedEventArgs<byte[]>(datagram, ipendpoint));
+            sender.BeginSend(datagram, datagram.Length, ipendpoint, new AsyncCallback(HandleDatagramSendFinish), new DatagramSendedEventArgs<byte[]>(datagram, ipendpoint));
         }
 
         private void HandleDatagramSendFinish(IAsyncResult ar)
@@ -206,7 +222,7 @@ namespace RsspGate.libs
                 if (ar.IsCompleted)
                 {
                     DatagramSendedEventArgs<byte[]> args = ar.AsyncState as DatagramSendedEventArgs<byte[]>;
-                    listener.EndSend(ar);
+                    sender.EndSend(ar);
                     RaiseDatagramSended(args);
                 }
             }
@@ -250,6 +266,11 @@ namespace RsspGate.libs
                         if (listener != null)
                         {
                             listener = null;
+                        }
+
+                        if (sender != null)
+                        {
+                            sender = null;
                         }
                     }
                     catch (SocketException ex)

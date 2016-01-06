@@ -7,23 +7,16 @@ using RsspGate.config;
 
 namespace RsspGate.libs.operation
 {
-    class direct : Operation
+    class change : Operation
     {
         public override void Init(parameter param)
         {
-            direct_parameter dp = param as direct_parameter;
+            throw new NotImplementedException();
         }
-
 
         public override byte[] Operate(byte[] stream)
         {
-            var org = (byte[])stream.Clone();
-            var result = org;
-            if (this._nextOperation!=null)
-            {
-                result = _nextOperation.Operate(result);
-            }
-            return result;
+            throw new NotImplementedException();
         }
     }
 }

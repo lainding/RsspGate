@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RsspGate.config;
 
 namespace RsspGate.libs.operation
 {
@@ -15,6 +16,6 @@ namespace RsspGate.libs.operation
         }
 
         public abstract byte[] Operate(byte[] stream);
-        public abstract void Init();
+        public abstract void Init(parameter param);
     }
 }

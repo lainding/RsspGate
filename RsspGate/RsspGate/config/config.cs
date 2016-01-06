@@ -60,6 +60,27 @@ namespace RsspGate.config
     }
 
     [DataContract]
+    public class operation
+    {
+        [DataMember]
+        public string name
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public dynamic parameters
+        {
+            get; set;
+        }
+    }
+
+    [DataContract]
+    public abstract class parameter
+    {
+    }
+    
+    [DataContract]
     public class route
     {
         [DataMember]
@@ -87,7 +108,7 @@ namespace RsspGate.config
         }
 
         [DataMember]
-        public List<string> process
+        public List<operation> process
         {
             get; set;
         }
@@ -112,15 +133,17 @@ namespace RsspGate.config
             get; set;
         }
 
-        public static config ReadConfig(string path)
+        public static dynamic ReadConfig(string path)
         {
             if (File.Exists(path))
             {
                 StreamReader reader = new StreamReader(path);
-                config cfg = null;
+                dynamic cfg = null;
                 try
                 {
-                    cfg = JSON.parse<config>(reader.ReadToEnd());
+                    var cstr = reader.ReadToEnd();
+                    //var c = JSON.Parse(cstr);
+                    cfg = JSON.Parse(cstr);
                 }
                 catch(Exception e)
                 {

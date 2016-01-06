@@ -20,9 +20,8 @@ namespace RsspGate
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var c = config.config.ReadConfig("./config.json");
+            config.config cc = c as config.config;
             Runtime.ProcessConfig(c);
-            //AsyncUdpServer us = new AsyncUdpServer(9001);
-            //us.Start();
             if (Runtime.IsRunning == true)
             {
                 Application.Run(new Form1());
