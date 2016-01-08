@@ -24,7 +24,7 @@ namespace RsspGate.libs.operation
             switch(name)
             {
                 case "direct":
-                    return (direct_parameter)param;
+                    return (config.direct)param;
             }
             return null;
         }

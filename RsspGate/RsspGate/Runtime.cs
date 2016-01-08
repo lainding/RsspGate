@@ -27,49 +27,98 @@ namespace RsspGate
                 isRunning = value;
             }
         }
+
+        private static void ProcessGates(dynamic gates)
+        {
+                foreach (var gate in gates)
+                {
+                    gate g = (gate)gate;
+                    if (g.name == null)
+                    {
+                        throw new ConfigErrorException("Config file gates item miss 'name' parameters.");
+                    }
+                    if (g.type != null)
+                    {
+                        switch (g.type.ToLower())
+                        {
+                            case "udp":
+                                {
+                                    IPAddress ip = IPAddress.Parse(g.ip);
+                                    Gate inter = new AsyncUdpServer(ip, g.port);
+                                    inter.Name = g.name;
+                                    inter.DatagramReceived += InterfaceProcess.ProcessInput;
+                                    gates.Add(inter);
+                                    break;
+                                }
+                            default:
+                                throw new ArgumentException("Unknown gate type.");
+                        }
+                    }
+                    else
+                    {
+                        throw new ConfigErrorException("Config file gates item miss 'type' parameters.");
+                    }
+                }
+
+        }
+
+        private static void ProcessDevices(dynamic devices)
+        {
+            foreach (var device in devices)
+            {
+                device d = (device)device;
+                if (d.name == null)
+                {
+                    throw new ConfigErrorException("Config file devices item miss 'name' parameters.");
+                }
+                IPAddress ip = IPAddress.Parse(d.ip);
+                Device dv = new Device(d.name, ip, d.port);
+                devices.Add(dv);
+            }
+        }
+
+        private static void ProcessRoutes(dynamic routes)
+        {
+
+        }
+
         public static void ProcessConfig(dynamic cfg)
         {
             if (cfg == null)
             {
                 return;
             }
-            foreach (gate g in cfg.gates)
+            //IEnumerable<string> aas = cfg.GetDynamicMemberNames();
+            //var matchRegex =new System.Text.RegularExpressions.Regex("gates", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            //var havegates = aas.Where(ra => matchRegex.Matches(ra).Count > 0).ToList<string>();
+            if (cfg.gates())
             {
-                try
-                {
-                    switch (g.type.ToLower())
-                    {
-                        case "udp":
-                            {
-                                IPAddress ip = IPAddress.Parse(g.ip);
-                                Gate inter = new AsyncUdpServer(ip, g.port);
-                                inter.Name = g.name;
-                                inter.DatagramReceived += InterfaceProcess.ProcessInput;
-                                gates.Add(inter);
-                                break;
-                            }
-                        default:
-                            throw new ArgumentException("Unknown gate type.");
-                    }
-                }
-                catch(Exception ex)
-                {
-                    ExceptionHandler.Handle(ex);
-                }
+                ProcessGates(cfg.gates);
             }
-            foreach (device d in cfg.devices)
+            else
             {
-                try
-                {
-                    IPAddress ip = IPAddress.Parse(d.ip);
-                    Device dv = new Device(d.name, ip, d.port);
-                    devices.Add(dv);
-                }
-                catch(Exception ex)
-                {
-                    ExceptionHandler.Handle(ex);
-                }
+                throw new ConfigErrorException("Config file miss 'gates' parameters.");
             }
+
+            if (cfg.devices())
+            {
+                ProcessDevices(cfg.devices);
+            }
+            else
+            {
+                throw new ConfigErrorException("Config file miss 'devices' parameters.");
+            }
+
+            if (cfg.routes())
+            {
+                ProcessRoutes(cfg.routes);
+            }
+            else
+            {
+                throw new ConfigErrorException("Config file miss 'routes' parameters.");
+            }
+
+
             foreach(var r in cfg.routes)
             {
                 try

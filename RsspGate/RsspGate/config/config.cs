@@ -2,132 +2,120 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization.Json;
 using RsspGate.libs;
 
 namespace RsspGate.config
 {
-    [DataContract]
     public class gate 
     {
-        [DataMember]
         public string name
         {
             get; set;
         }
 
-        [DataMember]
         public string ip
         {
             get; set;
         }
 
-        [DataMember(IsRequired = true)]
         public int port
         {
             get; set;
         }
 
-        [DataMember]
         public string type
         {
             get; set;
         }
+
+        public gate()
+        {
+            this.ip = "0.0.0.0";
+        }
     }
 
-    [DataContract]
     public class device
     {
-        [DataMember]
         public string name
         {
             get; set;
         }
 
-        [DataMember]
         public string ip
         {
             get; set;
         }
 
-        [DataMember]
         public int port
         {
             get; set;
         }
+
+        public device()
+        {
+            ip = "127.0.0.1";
+        }
+
     }
 
-    [DataContract]
     public class operation
     {
-        [DataMember]
         public string name
         {
             get; set;
         }
 
-        [DataMember]
         public dynamic parameters
         {
             get; set;
         }
     }
 
-    [DataContract]
     public abstract class parameter
     {
     }
     
-    [DataContract]
     public class route
     {
-        [DataMember]
         public string from
         {
             get; set;
         }
 
-        [DataMember]
         public string through
         {
             get; set;
         }
 
-        [DataMember]
         public string by
         {
             get; set;
         }
 
-        [DataMember]
         public string to
         {
             get; set;
         }
 
-        [DataMember]
         public List<operation> process
         {
             get; set;
         }
     }
 
-    [DataContract]
     public class config
     {
-        [DataMember]
         public List<gate> gates
         {
             get; set;
         }
-        [DataMember]
         public List<device> devices
         {
             get; set;
         }
-        [DataMember]
         public List<route> routes
         {
             get; set;

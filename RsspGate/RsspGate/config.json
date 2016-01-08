@@ -4,7 +4,7 @@
 			"name": "udp1",
 			"ip": "127.0.0.1",
 			"port": 9001,
-			"type": "udp"
+			"type": "udp" 
 		},
 		{
 			"name": "udp2",
@@ -15,7 +15,6 @@
 	],
 	"devices": [
 		{
-			"name": "ccs",
 			"ip": "127.0.0.1",
 			"port": 8080
 		},
@@ -39,8 +38,6 @@
 			"process": [{
 				"name": "insert",
 				"parameters": {
-					"position": "start"
-					"content": ""
 				}
 			}]
 		},

@@ -19,9 +19,15 @@ namespace RsspGate
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var c = config.config.ReadConfig("./config.json");
-            config.config cc = c as config.config;
-            Runtime.ProcessConfig(c);
+            try
+            {
+                var c = config.config.ReadConfig("./config.json");
+                Runtime.ProcessConfig(c);
+            }
+            catch(Exception ex)
+            {
+                ExceptionHandler.Handle(ex);
+            }
             if (Runtime.IsRunning == true)
             {
                 Application.Run(new Form1());

@@ -11,7 +11,7 @@ namespace RsspGate.libs.operation
     {
         public override void Init(parameter param)
         {
-            direct_parameter dp = param as direct_parameter;
+            config.direct dp = param as config.direct;
         }
 
 

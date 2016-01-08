@@ -35,7 +35,9 @@ namespace RsspGate.libs
         {
             using (var reader = JsonReaderWriterFactory.CreateJsonReader(encoding.GetBytes(json), XmlDictionaryReaderQuotas.Max))
             {
-                return ToValue(XElement.Load(reader));
+                var x = XElement.Load(reader);
+                return ToValue(x);
+                //return ToValue(XElement.Load(reader));
             }
         }
 
