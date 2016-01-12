@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RsspGate.config
 {
-    class insert : parameter
+    class remove : parameter
     {
         public int position
         {
@@ -14,11 +14,6 @@ namespace RsspGate.config
         }
 
         public int length
-        {
-            get; set;
-        }
-
-        public byte[] bytes
         {
             get; set;
         }

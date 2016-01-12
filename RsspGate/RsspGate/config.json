@@ -15,6 +15,7 @@
 	],
 	"devices": [
 		{
+			"name": "ccs",
 			"ip": "127.0.0.1",
 			"port": 8080
 		},
@@ -36,8 +37,10 @@
 			"by": "udp2",
 			"to": "ctc",
 			"process": [{
-				"name": "insert",
+				"name": "remove",
 				"parameters": {
+					"position": "start",
+					"length": 4
 				}
 			}]
 		},

@@ -35,7 +35,11 @@ namespace RsspGate
                     gate g = (gate)gate;
                     if (g.name == null)
                     {
-                        throw new ConfigErrorException("Config file gates item miss 'name' parameters.");
+                        throw new ConfigErrorException("Config gates item miss 'name' parameters.");
+                    }
+                    if (Runtime.gates.Where(gr => gr.Name == g.name).Count() > 0)
+                    {
+                        throw new ConfigErrorException("Config gates item have same name.");
                     }
                     if (g.type != null)
                     {
@@ -47,7 +51,7 @@ namespace RsspGate
                                     Gate inter = new AsyncUdpServer(ip, g.port);
                                     inter.Name = g.name;
                                     inter.DatagramReceived += InterfaceProcess.ProcessInput;
-                                    gates.Add(inter);
+                                    Runtime.gates.Add(inter);
                                     break;
                                 }
                             default:
@@ -56,7 +60,7 @@ namespace RsspGate
                     }
                     else
                     {
-                        throw new ConfigErrorException("Config file gates item miss 'type' parameters.");
+                        throw new ConfigErrorException("Config gates item miss 'type' parameters.");
                     }
                 }
 
@@ -69,16 +73,95 @@ namespace RsspGate
                 device d = (device)device;
                 if (d.name == null)
                 {
-                    throw new ConfigErrorException("Config file devices item miss 'name' parameters.");
+                    throw new ConfigErrorException("Config devices item miss 'name' parameters.");
+                }
+                if (Runtime.devices.Where(dr=>dr.Name == d.name).Count() > 0)
+                {
+                    throw new ConfigErrorException("Config devices item has same name.");
                 }
                 IPAddress ip = IPAddress.Parse(d.ip);
                 Device dv = new Device(d.name, ip, d.port);
-                devices.Add(dv);
+                
+                Runtime.devices.Add(dv);
             }
         }
 
         private static void ProcessRoutes(dynamic routes)
         {
+            foreach (var route in routes)
+            {
+                route r = (route)route;
+                try
+                {
+                    var from = devices.Where(ra => ra.Name == r.from);
+                    var to = devices.Where(ra => ra.Name == r.to);
+                    if (r.through == null && Runtime.gates.Count != 1)
+                    {
+                        throw new ConfigErrorException("Config routes item miss through.");
+                    }
+                    else
+                    {
+                        if (r.through == null)
+                        {
+                            r.through = Runtime.gates[0].Name;
+                        }
+                    }
+                    if (r.by == null && Runtime.gates.Count != 1)
+                    {
+                        throw new ConfigErrorException("Config routes item miss through.");
+                    }
+                    else
+                    {
+                        if (r.by == null)
+                        {
+                            r.by = Runtime.gates[0].Name;
+                        }
+                    }
+                    var through = gates.Where(ra => ra.Name == r.through);
+                    var by = gates.Where(ra => ra.Name == r.by);
+                    foreach (var fi in from)
+                    {
+                        foreach (var ti in to)
+                        {
+                            Route ri = new Route(fi, through.ToArray()[0], ti, by.ToArray()[0]);
+                            Operation oper = null;
+                            foreach (dynamic pi in route.process)
+                            {
+                                if (pi.name())
+                                {
+                                    var tmp = OperationFactory.GetOperation(pi.name);
+                                    parameter param = null;
+                                    if (pi.parameters())
+                                    {
+                                        param = OperationFactory.GetParameter(pi.name, pi.parameters);
+                                    }
+                                    if (tmp != null)
+                                    {
+                                        if (oper == null)
+                                        {
+                                            oper = tmp;
+                                        }
+                                        else
+                                        {
+                                            oper.SetNextOperation(tmp);
+                                        }
+                                        if (param != null)
+                                        {
+                                            tmp.Init(param);
+                                        }
+                                    }
+                                }
+                            }
+                            ri.Process = oper;
+                            through.ToArray()[0].AddRoute(ri);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Handle(ex);
+                }
+            }
 
         }
 
@@ -119,86 +202,6 @@ namespace RsspGate
             }
 
 
-            foreach(var r in cfg.routes)
-            {
-                try
-                {
-                    var from = devices.Where(ra => ra.Name == r.from);
-                    var to = devices.Where(ra => ra.Name == r.to);
-                    if (r.through == null && cfg.gates.Count != 1)
-                    {
-                        throw new ArgumentException("Miss Through or By Arguments.");
-                    }
-                    else
-                    {
-                        if (r.through == null)
-                        {
-                            r.through = cfg.gates[0].name;
-                        }
-                    }
-                    if (r.by == null && cfg.gates.Count != 1)
-                    {
-                        throw new ArgumentException("Miss Through or By Arguments.");
-                    }
-                    else
-                    {
-                        if (r.by == null)
-                        {
-                            r.by = cfg.gates[0].name;
-                        }
-                    }
-                    var through = gates.Where(ra => ra.Name == r.through);
-                    var by = gates.Where(ra => ra.Name == r.by);
-                    if (through.Count()!=1 || by.Count()!=1)
-                    {
-                        throw new ArgumentException("Multi same name in gates.");
-                    }
-                    else
-                    {
-                        foreach (var fi in from)
-                        {
-                            foreach(var ti in to)
-                            {
-                                Route route = new Route(fi, through.ToArray()[0], ti, by.ToArray()[0]);
-                                Operation oper = null;
-                                foreach(dynamic pi in r.process)
-                                {
-                                    if (pi.name())
-                                    {
-                                        var tmp = OperationFactory.GetOperation(pi.name);
-                                        parameter param = null;
-                                        if (pi.parameters())
-                                        {
-                                            param = OperationFactory.GetParameter(pi.name, pi.parameters);
-                                        }
-                                        if (tmp != null)
-                                        {
-                                            if (oper == null)
-                                            {
-                                                oper = tmp;
-                                            }
-                                            else
-                                            {
-                                                oper.SetNextOperation(tmp);
-                                            }
-                                            if (param != null)
-                                            {
-                                                tmp.Init(param);
-                                            }
-                                        }
-                                    }
-                                }
-                                route.Process = oper;
-                                through.ToArray()[0].AddRoute(route);
-                            }
-                        }
-                    }
-                }
-                catch(Exception ex)
-                {
-                    ExceptionHandler.Handle(ex);
-                }
-            }
         }
 
     }

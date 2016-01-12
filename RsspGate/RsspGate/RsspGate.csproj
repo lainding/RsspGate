@@ -54,6 +54,8 @@
     <Compile Include="config\ConfigErrorException.cs" />
     <Compile Include="config\direct.cs" />
     <Compile Include="config\insert.cs" />
+    <Compile Include="config\parameter.cs" />
+    <Compile Include="config\remove.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

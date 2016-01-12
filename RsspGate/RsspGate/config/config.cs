@@ -74,9 +74,6 @@ namespace RsspGate.config
         }
     }
 
-    public abstract class parameter
-    {
-    }
     
     public class route
     {
