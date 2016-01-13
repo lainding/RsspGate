@@ -32,12 +32,19 @@ namespace RsspGate.libs.operation
             {
                 p = stream.Length;
             }
-            using (MemoryStream ms = new MemoryStream(stream.Length + l))
+            if (org.Length >= p)
             {
-                ms.Write(org, 0, p);
-                ms.Write(bs, 0, l);
-                ms.Write(org, p, stream.Length - p);
-                result = ms.GetBuffer();
+                using (MemoryStream ms = new MemoryStream(stream.Length + l))
+                {
+                    ms.Write(org, 0, p);
+                    ms.Write(bs, 0, l);
+                    ms.Write(org, p, stream.Length - p);
+                    result = ms.GetBuffer();
+                }
+            }
+            else
+            {
+                result = org;
             }
             if (this._nextOperation != null)
             {

@@ -19,6 +19,8 @@ namespace RsspGate.libs.operation
                     return new insert();
                 case "remove":
                     return new remove();
+                case "reverse":
+                    return new reverse();
             }
             return null;
         }
@@ -49,6 +51,10 @@ namespace RsspGate.libs.operation
             return param;
         }
 
+        private static dynamic SpecialReverse(dynamic param)
+        {
+            return param;
+        }
 
         private static dynamic _Position(dynamic param)
         {
@@ -60,12 +66,11 @@ namespace RsspGate.libs.operation
             {
                 if (param.position.GetType().Name == "String")
                 {
-                    if (((string)param.position).ToLower() == "start")
+                    if (((string)param.position).ToLower().Trim() == "start" || ((string)param.position).ToLower().Trim() == "begin")
                     {
                         param.position = 0;
                     }
-                    
-                    else if (((string)param.position).ToLower() == "end")
+                    else if (((string)param.position).ToLower().Trim() == "end")
                     {
                         param.position = -1;
                     }
@@ -100,6 +105,15 @@ namespace RsspGate.libs.operation
             }
             return param;
         }
+
+        private static dynamic _Begin(dynamic param)
+        {
+            if (!param.begin())
+            {
+                
+            }
+            return param;
+        }
         public static parameter GetParameter(string name, dynamic param)
         {
             switch(name)
@@ -110,6 +124,8 @@ namespace RsspGate.libs.operation
                     return (config.insert)SpecialInsert(param);
                 case "remove":
                     return (config.remove)SpecialRemove(param);
+                case "reverse":
+                    return (config.reverse)SpecialReverse(param);
             }
             return null;
         }

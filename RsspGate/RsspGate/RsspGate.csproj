@@ -56,6 +56,7 @@
     <Compile Include="config\insert.cs" />
     <Compile Include="config\parameter.cs" />
     <Compile Include="config\remove.cs" />
+    <Compile Include="config\reverse.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,9 +78,11 @@
     <Compile Include="libs\operation\Operation.cs" />
     <Compile Include="libs\operation\OperationFactory.cs" />
     <Compile Include="libs\operation\remove.cs" />
+    <Compile Include="libs\operation\reverse.cs" />
     <Compile Include="libs\Route.cs" />
     <Compile Include="libs\Rssp1.cs" />
     <Compile Include="libs\GateEvent.cs" />
+    <Compile Include="log.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime.cs" />
