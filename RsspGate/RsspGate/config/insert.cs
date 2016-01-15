@@ -18,7 +18,7 @@ namespace RsspGate.config
             get; set;
         }
 
-        public byte[] bytes
+        public dynamic value
         {
             get; set;
         }

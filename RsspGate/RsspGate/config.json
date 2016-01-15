@@ -40,8 +40,14 @@
 				{
 					"name": "insert",
 					"parameters": {
-						"position": 7,
-						"bytes": "xyz"
+						"position": "start",
+						"addon": {
+							"function": "static",
+							"data": {
+								"value": "hello",
+								"type": "string"
+							}
+						}
 					}
 				}
 			]

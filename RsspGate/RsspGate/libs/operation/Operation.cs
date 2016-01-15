@@ -9,6 +9,8 @@ namespace RsspGate.libs.operation
 {
     abstract class Operation
     {
+        protected IGetValue _getValueWidget = null;
+        protected Avaliable _avaliableWidget = null;
         protected Operation _nextOperation;
         public void SetNextOperation(Operation oper)
         {
@@ -17,5 +19,15 @@ namespace RsspGate.libs.operation
 
         public abstract byte[] Operate(byte[] stream);
         public abstract void Init(parameter param);
+
+        public void SetValueWidget(IGetValue widget)
+        {
+            this._getValueWidget = widget;
+        }
+
+        public void SetAvaliableWidget(Avaliable widget)
+        {
+            this._avaliableWidget = widget;
+        }
     }
 }

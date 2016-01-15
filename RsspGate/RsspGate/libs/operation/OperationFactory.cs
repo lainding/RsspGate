@@ -27,13 +27,13 @@ namespace RsspGate.libs.operation
 
         private static dynamic SpecialInsert(dynamic param)
         {
-            if (!param.bytes())
+            if (!param.addon())
             {
-                throw new ConfigErrorException("Config routes insert method miss bytes.");
+                //TODO: show error if not addon part.
             }
             else
             {
-                param = _Position(_Length(_Bytes(param)));
+                param = _Position(_Length(_AddOn(param)));
             }
             return param;
         }
@@ -53,7 +53,7 @@ namespace RsspGate.libs.operation
 
         private static dynamic SpecialReverse(dynamic param)
         {
-            return param;
+            return _End(_Begin(param));
         }
 
         private static dynamic _Position(dynamic param)
@@ -106,14 +106,57 @@ namespace RsspGate.libs.operation
             return param;
         }
 
+        private static dynamic _AddOn(dynamic param)
+        {
+            return param;
+        }
+
         private static dynamic _Begin(dynamic param)
         {
             if (!param.begin())
             {
-                
+                param.begin = 0;
+            }
+            else
+            {
+                if (param.begin.GetType().Name == "String")
+                {
+                    if(((string)param.begin).Trim().ToLower() == "start" || ((string)param.begin).Trim().ToLower() == "begin")
+                    {
+                        param.begin = 0;
+                    }
+                    else if (((string)param.begin).Trim().ToLower() == "end")
+                    {
+                        param.begin = -1;
+                    }
+                }
             }
             return param;
         }
+
+        private static dynamic _End(dynamic param)
+        {
+            if (!param.end())
+            {
+                param.end = -1;
+            }
+            else
+            {
+                if (param.end.GetType().Name == "String")
+                {
+                    if(((string)param.end).Trim().ToLower() == "start" || ((string)param.end).Trim().ToLower() == "begin")
+                    {
+                        param.end = 0;
+                    }
+                    else if (((string)param.end).Trim().ToLower() == "end")
+                    {
+                        param.end = -1;
+                    }
+                }
+            }
+            return param;
+        }
+
         public static parameter GetParameter(string name, dynamic param)
         {
             switch(name)
@@ -129,5 +172,7 @@ namespace RsspGate.libs.operation
             }
             return null;
         }
+
+        public static 
     }
 }

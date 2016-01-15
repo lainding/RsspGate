@@ -18,7 +18,7 @@ namespace RsspGate.libs.operation
             config.insert p = param as config.insert;
             this.position = p.position;
             this.length = p.length;
-            this.bytes = p.bytes;
+            //this.bytes = p.bytes;
         }
 
         public override byte[] Operate(byte[] stream)
