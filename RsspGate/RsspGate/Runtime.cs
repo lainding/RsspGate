@@ -130,13 +130,12 @@ namespace RsspGate
                                 if (pi.name())
                                 {
                                     var tmp = OperationFactory.GetOperation(pi.name);
-                                    parameter param = null;
-                                    if (pi.parameters())
-                                    {
-                                        param = OperationFactory.GetParameter(pi.name, pi.parameters);
-                                    }
                                     if (tmp != null)
                                     {
+                                        if (pi.parameters())
+                                        {
+                                            OperationFactory.SetParameter(tmp, pi.name, pi.parameters);
+                                        }
                                         if (oper == null)
                                         {
                                             oper = tmp;
@@ -145,11 +144,7 @@ namespace RsspGate
                                         {
                                             oper.SetNextOperation(tmp);
                                         }
-                                        if (param != null)
-                                        {
-                                            tmp.Init(param);
-                                        }
-                                    }
+                                    } 
                                 }
                             }
                             ri.Process = oper;

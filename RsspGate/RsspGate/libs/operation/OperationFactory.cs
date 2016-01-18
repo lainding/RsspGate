@@ -25,7 +25,20 @@ namespace RsspGate.libs.operation
             return null;
         }
 
-        private static dynamic SpecialInsert(dynamic param)
+        private static IGetValue GetAddon(string name, dynamic data)
+        {
+            IGetValue addon = null;
+            switch (name)
+            {
+                case "static":
+                    addon = new addon.StaticData(data);
+                    break;
+            }
+            return addon;
+        }
+
+
+        private static dynamic SpecialInsert(Operation oper, dynamic param)
         {
             if (!param.addon())
             {
@@ -33,12 +46,20 @@ namespace RsspGate.libs.operation
             }
             else
             {
-                param = _Position(_Length(_AddOn(param)));
+                var p = (config.insert)_Position(_Length(param));
+                oper.Init(p);
+
+                if (param.addon.function() && param.addon.data())
+                {
+                    var aofun = param.addon.function;
+                    var addon = GetAddon(aofun, param.addon.data);
+                    oper.SetValueWidget(addon);
+                }
             }
             return param;
         }
 
-        private static dynamic SpecialRemove(dynamic param)
+        private static dynamic SpecialRemove(Operation oper, dynamic param)
         {
             if (!param.length())
             {
@@ -51,7 +72,7 @@ namespace RsspGate.libs.operation
             return param;
         }
 
-        private static dynamic SpecialReverse(dynamic param)
+        private static dynamic SpecialReverse(Operation oper, dynamic param)
         {
             return _End(_Begin(param));
         }
@@ -157,22 +178,22 @@ namespace RsspGate.libs.operation
             return param;
         }
 
-        public static parameter GetParameter(string name, dynamic param)
+        public static void SetParameter(Operation oper, string name, dynamic param)
         {
             switch(name)
             {
-                case "direct":
-                    return (config.direct)param;
                 case "insert":
-                    return (config.insert)SpecialInsert(param);
+                    SpecialInsert(oper, param);
+                    break;
                 case "remove":
-                    return (config.remove)SpecialRemove(param);
+                    SpecialRemove(oper, param);
+                    break;
                 case "reverse":
-                    return (config.reverse)SpecialReverse(param);
+                    SpecialReverse(oper, param);
+                    break;
             }
-            return null;
         }
 
-        public static 
+        //public static 
     }
 }

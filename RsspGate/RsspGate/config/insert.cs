@@ -17,10 +17,5 @@ namespace RsspGate.config
         {
             get; set;
         }
-
-        public dynamic value
-        {
-            get; set;
-        }
     }
 }

@@ -41,11 +41,12 @@
 					"name": "insert",
 					"parameters": {
 						"position": "start",
+						"length": 4,
 						"addon": {
 							"function": "static",
 							"data": {
-								"value": "hello",
-								"type": "string"
+								"value": 1,
+								"type": "int"
 							}
 						}
 					}

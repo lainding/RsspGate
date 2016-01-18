@@ -27,19 +27,26 @@ namespace RsspGate.libs.operation
             byte[] result = null;
             var p = position;
             var l = length;
-            var bs = bytes;
+            var bs = this._getValueWidget.GetValue();
             if (position == -1)
             {
                 p = stream.Length;
             }
             if (org.Length >= p)
             {
-                using (MemoryStream ms = new MemoryStream(stream.Length + l))
+                if (bs != null)
                 {
-                    ms.Write(org, 0, p);
-                    ms.Write(bs, 0, l);
-                    ms.Write(org, p, stream.Length - p);
-                    result = ms.GetBuffer();
+                    using (MemoryStream ms = new MemoryStream(stream.Length + l))
+                    {
+                        ms.Write(org, 0, p);
+                        ms.Write(bs, 0, l);
+                        ms.Write(org, p, stream.Length - p);
+                        result = ms.GetBuffer();
+                    }
+                }
+                else
+                {
+                    //TODO: log
                 }
             }
             else
