@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RsspGate.config;
+using RsspGate.libs.operation.addon;
+using RsspGate.libs.operation.avaliable;
 
 namespace RsspGate.libs.operation
 {
     abstract class Operation
     {
-        protected IGetValue _getValueWidget = null;
-        protected Avaliable _avaliableWidget = null;
+        protected Addon _getValueWidget = new DefaultAddon();
+        protected Avaliable _avaliableWidget = new DefaultAvaliable();
         protected Operation _nextOperation;
         public void SetNextOperation(Operation oper)
         {
@@ -20,7 +22,7 @@ namespace RsspGate.libs.operation
         public abstract byte[] Operate(byte[] stream);
         public abstract void Init(parameter param);
 
-        public void SetValueWidget(IGetValue widget)
+        public void SetValueWidget(Addon widget)
         {
             this._getValueWidget = widget;
         }

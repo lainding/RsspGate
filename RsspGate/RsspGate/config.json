@@ -40,13 +40,11 @@
 				{
 					"name": "insert",
 					"parameters": {
-						"position": "start",
-						"length": 4,
+						"position": 0,
 						"addon": {
-							"function": "static",
+							"function": "timestamp",
 							"data": {
-								"value": 1,
-								"type": "int"
+								"endian": "big"
 							}
 						}
 					}

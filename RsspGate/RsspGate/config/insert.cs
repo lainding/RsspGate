@@ -12,10 +12,5 @@ namespace RsspGate.config
         {
             get; set;
         }
-
-        public int length
-        {
-            get; set;
-        }
     }
 }

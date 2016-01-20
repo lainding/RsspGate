@@ -72,11 +72,14 @@
     <Compile Include="libs\ExceptionHandler.cs" />
     <Compile Include="libs\Gate.cs" />
     <Compile Include="libs\JSON.cs" />
+    <Compile Include="libs\operation\addon\DefaultAddon.cs" />
     <Compile Include="libs\operation\addon\StaticData.cs" />
+    <Compile Include="libs\operation\addon\TimeStamp.cs" />
+    <Compile Include="libs\operation\avaliable\DefaultAvaliable.cs" />
     <Compile Include="libs\operation\method\change.cs" />
     <Compile Include="libs\operation\method\direct.cs" />
     <Compile Include="libs\operation\Avaliable.cs" />
-    <Compile Include="libs\operation\IGetValue.cs" />
+    <Compile Include="libs\operation\Addon.cs" />
     <Compile Include="libs\operation\method\insert.cs" />
     <Compile Include="libs\operation\Operation.cs" />
     <Compile Include="libs\operation\OperationFactory.cs" />

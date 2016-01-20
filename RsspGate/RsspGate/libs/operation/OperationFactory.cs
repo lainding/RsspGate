@@ -25,13 +25,16 @@ namespace RsspGate.libs.operation
             return null;
         }
 
-        private static IGetValue GetAddon(string name, dynamic data)
+        private static Addon GetAddon(string name, dynamic data)
         {
-            IGetValue addon = null;
+            Addon addon = null;
             switch (name)
             {
                 case "static":
                     addon = new addon.StaticData(data);
+                    break;
+                case "timestamp":
+                    addon = new addon.TimeStamp(data);
                     break;
             }
             return addon;
@@ -102,10 +105,9 @@ namespace RsspGate.libs.operation
 
         private static dynamic _Length(dynamic param)
         {
-            if (!param.length() && param.bytes())
+            if (!param.length())
             {
-                byte[] b = (byte[])param.bytes;
-                param.length = b.Count();
+                param.length = -1;
             }
             return param;
         }

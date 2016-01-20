@@ -8,7 +8,7 @@ namespace RsspGate.libs.operation
 {
     public abstract class Avaliable
     {
-        public bool IsAvaliable()
+        public virtual bool IsAvaliable(byte[] stream)
         {
             return true;
         }
