@@ -50,18 +50,21 @@
         * `encoding`：字符串编码方式（`ASCII`，`UTF8`，`UNICODE`，`UTF32`）
         * `length`：长度
         * `endian`：大小端方式（`big`，`little`）
-    >> **static**
+      
+    > **static**
+    >
+    > 插入静态值。
+    > * `value`：插入值内容
 
-       插入静态值。
-        * `value`：插入值内容
+    > **timestamp**
+    > 
+    > 插入时间戳，时间戳目前是4个字节。
 
-       **timestamp**
-       
-       插入时间戳，时间戳目前是4个字节。
-
-       **sequence**
-        
-        插入序号
+    > **sequence**
+    >  
+    > 插入序号
+    > * `loop`：序号是否循环
+    > * `type` ：
 
 
 
