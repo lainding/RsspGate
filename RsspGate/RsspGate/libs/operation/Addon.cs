@@ -9,11 +9,21 @@ namespace RsspGate.libs.operation
     public abstract class Addon
     {
         private static string[] AvaliableType = { "string", "int", "byte", "long", "short", "double", "float", "uint", "ulong", "ushort", "array" };
-        private static Dictionary<string, Encoding> AvaliableEncoder = new Dictionary<string, Encoding>() {
+        private static Dictionary<string, Encoding> AvaliableEncoder = new Dictionary<string, Encoding>()
+        {
             { "ascii", Encoding.ASCII },
             { "utf8", Encoding.UTF8 },
             { "unicode", Encoding.Unicode },
             { "utf32", Encoding.UTF32 }
+        };
+        private static Dictionary<string, int> TypeLength = new Dictionary<string, int>()
+        {
+            { "int", 4 },
+            { "uint", 4 },
+            { "short", 2 },
+            { "ushort", 2 },
+            { "long", 8 },
+            { "ulong", 8 }
         };
 
 
@@ -31,6 +41,10 @@ namespace RsspGate.libs.operation
             if (AvaliableType.Contains(type))
             {
                 this.type = type;
+            }
+            if (TypeLength.ContainsKey(type))
+            {
+                SetLength(TypeLength[type]);
             }
         }
 

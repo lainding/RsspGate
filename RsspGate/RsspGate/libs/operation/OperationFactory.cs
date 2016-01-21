@@ -36,6 +36,9 @@ namespace RsspGate.libs.operation
                 case "timestamp":
                     addon = new addon.TimeStamp(data);
                     break;
+                case "sequence":
+                    addon = new addon.Sequence(data);
+                    break;
             }
             return addon;
         }
@@ -52,10 +55,15 @@ namespace RsspGate.libs.operation
                 var p = (config.insert)_Position(_Length(param));
                 oper.Init(p);
 
-                if (param.addon.function() && param.addon.data())
+                if (param.addon.function())
                 {
                     var aofun = param.addon.function;
-                    var addon = GetAddon(aofun, param.addon.data);
+                    dynamic aodata = JSON.Parse("{}");
+                    if (param.addon.data())
+                    {
+                        aodata = param.addon.data;
+                    }
+                    var addon = GetAddon(aofun, aodata);
                     oper.SetValueWidget(addon);
                 }
             }
@@ -77,7 +85,9 @@ namespace RsspGate.libs.operation
 
         private static dynamic SpecialReverse(Operation oper, dynamic param)
         {
-            return _End(_Begin(param));
+            var p = (config.reverse)_End(_Begin(param));
+            oper.Init(p);
+            return param;
         }
 
         private static dynamic _Position(dynamic param)

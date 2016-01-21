@@ -73,6 +73,7 @@
     <Compile Include="libs\Gate.cs" />
     <Compile Include="libs\JSON.cs" />
     <Compile Include="libs\operation\addon\DefaultAddon.cs" />
+    <Compile Include="libs\operation\addon\Sequence.cs" />
     <Compile Include="libs\operation\addon\StaticData.cs" />
     <Compile Include="libs\operation\addon\TimeStamp.cs" />
     <Compile Include="libs\operation\avaliable\DefaultAvaliable.cs" />

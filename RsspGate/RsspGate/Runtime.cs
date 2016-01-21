@@ -136,6 +136,10 @@ namespace RsspGate
                                         {
                                             OperationFactory.SetParameter(tmp, pi.name, pi.parameters);
                                         }
+                                        else
+                                        {
+                                            OperationFactory.SetParameter(tmp, pi.name, JSON.Parse("{}"));
+                                        }
                                         if (oper == null)
                                         {
                                             oper = tmp;

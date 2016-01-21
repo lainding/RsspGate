@@ -10,7 +10,6 @@ namespace RsspGate.libs.operation.addon
     {
         public TimeStamp(dynamic data)
         {
-            SetLength(4);
             SetType("int");
             if (data.endian())
             {

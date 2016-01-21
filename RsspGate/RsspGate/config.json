@@ -42,9 +42,10 @@
 					"parameters": {
 						"position": 0,
 						"addon": {
-							"function": "timestamp",
+							"function": "sequence",
 							"data": {
-								"endian": "big"
+								"loop": false,
+								"type": "uint"
 							}
 						}
 					}
