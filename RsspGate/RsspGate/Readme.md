@@ -6,7 +6,7 @@
 
 ![AltText](./documents/flowchart.png)
 
-**配置**
+## **配置**
 
 配置`config.json`包括3部分：分别定义设备，端口和路由方式。
 
@@ -34,15 +34,94 @@
   * `by`：通过此端口发送消息到目标设备，使用之前定义过的端口
   * `process`：定义处理方法，可定义多个，按照顺序依次处理后
 
-4. 处理方法`process`
+## 处理方法
 
-    4.1 插入`insert`
+1. 处理方法参数
+  * `name`：处理方法（包含`insert`，`remove`，`direct`，`reverse`，`change`，`block`等）
+  * `parameters`：处理方法参数
+
+1. 插入`insert`
+  在通信的消息中插入信息。
+  * `position`： 插入信息的位置（可选值：数值——表示在消息中的位置，`start/begin`——表示在消息的开始，`end`——表示在消息尾部
+  * `addon`：定义插入内容
+    * `function`： 插入内容函数（包括`static`，`timestamp`,`sequence`等）
+    * `data`：插入内容函数参数
+        * `type`：插入内容数据类型（`string`，`byte`，`int`，`short`，`long`，`uint`，`ushort`，`ulong`，`float`，`double`，`array`）
+        * `encoding`：字符串编码方式（`ASCII`，`UTF8`，`UNICODE`，`UTF32`）
+        * `length`：长度
+        * `endian`：大小端方式（`big`，`little`）
+    >> **static**
+
+       插入静态值。
+        * `value`：插入值内容
+
+       **timestamp**
+       
+       插入时间戳，时间戳目前是4个字节。
+
+       **sequence**
+        
+        插入序号
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 **TODO**
 * []增加设置条件功能
-* []增加翻转reverse操作功能
 * [tcp]增加TCP端口实现
 * []增加Value产生方法
