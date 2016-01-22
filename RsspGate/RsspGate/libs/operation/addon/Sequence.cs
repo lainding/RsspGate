@@ -10,10 +10,42 @@ namespace RsspGate.libs.operation.addon
     {
         class Counter
         {
-            private long _count;
+            private uint _count;
+            private long _start = 0;
+            private long _end = long.MaxValue;
+            private int _step = 1;
+            private bool _isloop = true;
+
+            public void SetIsLoop(bool isloop)
+            {
+                this._isloop = isloop;
+            }
+
+            public void SetStart(long start)
+            {
+                this._start = start;
+            }
+            public void SetEnd(long end)
+            {
+                this._end = end;
+            }
+
+            public Counter(Type type)
+            {
+                SetStart(0);
+                if (type.GetField("MaxValue") == null)
+                {
+                    throw new config.ConfigErrorException("error sequence type.");
+                }
+                else
+                {
+                    SetEnd((long)(type.GetField("MaxValue").GetValue(null)));
+                }
+            }
+
         }
-        private bool IsLoop = true;
-        private bool IsIncrease = true;
+
+        private Counter counter = null;
         private static string[] AvaliableType = { "uint", "ulong", "ushort" };
 
         private ulong start = 0;
@@ -21,10 +53,6 @@ namespace RsspGate.libs.operation.addon
 
         public Sequence(dynamic data)
         {
-            if (data.loop() && data.loop.GetType().Name == "Boolean")
-            {
-                IsLoop = data.loop;
-            }
 
             if (data.type())
             {
@@ -43,33 +71,49 @@ namespace RsspGate.libs.operation.addon
                 SetType("uint");
             }
 
-            if (data.direction() && data.direction.GetType().Name == "String")
+
+            counter = new Counter(TypeTable[this.type]);
+
+            if (data.loop() && data.loop.GetType().Name == "Boolean")
             {
-                string d = ((string)data.direction).Trim().ToLower();
-                if (d == "increase")
-                {
-                    this.IsIncrease = true;
-                }
-                if (d == "decrease")
-                {
-                    this.IsIncrease = false;
-                }
+                counter.SetIsLoop(data.loop);
             }
 
             if (data.start() && data.start.GetType.Name == "Double")
             {
-                start = (ulong)data.start;
+                if (data.start < 0)
+                {
+                    throw new config.ConfigErrorException("Sequence start must bigger than 0.");
+                }
+                counter.SetStart(data.start);
             }
 
             if (data.end() && data.end.GetType.Name == "Double")
             {
-                end = (ulong)data.end;
+                System.Reflection.FieldInfo f = TypeTable[this.type].GetField("MaxValue");
+                if (f != null)
+                {
+                    long typemax = (long)(f.GetValue(null));
+                    if ((long)data.end > typemax)
+                    {
+                        throw new config.ConfigErrorException("Sequence end is bigger than type define maxmium.");
+                    }
+                    else
+                    {
+                        counter.SetEnd(data.end);
+                    }
+                }
             }
+
+            if (data.step() && data.direction.GetType().Name == "Double")
+            {
+            }
+
 
         }
         public override int GetLength()
         {
-            throw new NotImplementedException();
+            return this.length;
         }
 
         public override byte[] GetValue()

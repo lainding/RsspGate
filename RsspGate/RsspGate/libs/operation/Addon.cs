@@ -26,6 +26,14 @@ namespace RsspGate.libs.operation
             { "ulong", 8 }
         };
 
+        protected static Dictionary<string, Type> TypeTable = new Dictionary<string, Type>()
+        {
+            { "ushort", typeof(ushort) },
+            { "string", typeof(string) },
+            { "uint", typeof(uint) },
+            { "ulong", typeof(ulong) }
+        };
+
 
         protected byte[] value;
         protected Encoding encoder = AvaliableEncoder["ascii"];
