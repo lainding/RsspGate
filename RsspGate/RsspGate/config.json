@@ -44,8 +44,10 @@
 						"addon": {
 							"function": "sequence",
 							"data": {
-								"loop": false,
-								"type": "uint"
+								"loop": true,
+								"type": "byte",
+								"start": 1,
+								"step": -1
 							}
 						}
 					}

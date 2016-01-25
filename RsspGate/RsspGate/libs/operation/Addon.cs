@@ -23,7 +23,8 @@ namespace RsspGate.libs.operation
             { "short", 2 },
             { "ushort", 2 },
             { "long", 8 },
-            { "ulong", 8 }
+            { "ulong", 8 },
+            { "byte", 1 }
         };
 
         protected static Dictionary<string, Type> TypeTable = new Dictionary<string, Type>()
@@ -31,7 +32,8 @@ namespace RsspGate.libs.operation
             { "ushort", typeof(ushort) },
             { "string", typeof(string) },
             { "uint", typeof(uint) },
-            { "ulong", typeof(ulong) }
+            { "ulong", typeof(ulong) },
+            { "byte", typeof(byte) }
         };
 
 
@@ -204,6 +206,19 @@ namespace RsspGate.libs.operation
                 throw new config.ConfigErrorException("");
             }
             ReverseValue();
+            SetLengthViaValue();
+        }
+
+        protected void SetValue(byte data)
+        {
+            if (type == "byte")
+            {
+                this.value = new byte[] { data };
+            }
+            else
+            {
+                throw new config.ConfigErrorException("");
+            }
             SetLengthViaValue();
         }
 

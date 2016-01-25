@@ -13,6 +13,8 @@ namespace RsspGate
     {
         public static void ProcessInput(object sender, DatagramReceivedEventArgs<byte[]> args)
         {
+            crc16 c = new crc16();
+            var a = c.ComputeChecksumBytes(args.Datagram);
             Gate gate = sender as Gate;
             IPAddress ip = args.RemoteEndPoint.Address;
             int port = args.RemoteEndPoint.Port;

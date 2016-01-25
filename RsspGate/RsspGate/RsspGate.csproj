@@ -65,7 +65,7 @@
     </Compile>
     <Compile Include="InterfaceProcess.cs" />
     <Compile Include="libs\AsyncUdpServer.cs" />
-    <Compile Include="libs\crc.cs" />
+    <Compile Include="libs\crc16.cs" />
     <Compile Include="libs\DataFrame.cs" />
     <Compile Include="libs\DataStream.cs" />
     <Compile Include="libs\Device.cs" />
