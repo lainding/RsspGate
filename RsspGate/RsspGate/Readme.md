@@ -45,6 +45,7 @@
   * `position`： 插入信息的位置（可选值：数值——表示在消息中的位置，`start/begin`——表示在消息的开始，`end`——表示在消息尾部
   * `addon`：定义插入内容
     * `function`： 插入内容函数（包括`static`，`timestamp`,`sequence`等）
+    * `endian`：数据大小端方式（`big`，`little`），此处优先级高，如果data数据域中也指定且与此处不同，以此处为准。
     * `data`：插入内容函数参数
         * `type`：插入内容数据类型（`string`，`byte`，`int`，`short`，`long`，`uint`，`ushort`，`ulong`，`float`，`double`，`array`）
         * `encoding`：字符串编码方式（`ASCII`，`UTF8`，`UNICODE`，`UTF32`）
@@ -65,6 +66,14 @@
     > 插入序号
     > * `loop`：序号是否循环
     > * `type` ：
+
+    > **crc16**
+    >
+    > 对数据域进行crc16校验
+    > * `polynom`：crc16多项式，多项式要求以字符串形式（以"括起），支持十六进制或十进制格式
+    > * `start`：数据域起始位置，默认为start(begin)，可以用数值类型指定值，也可以用"start"或"begin“表示0
+    > * `end`：数据域终止位置，默认为end，可以用数值类型表示终止字节位置
+    > * `endian`：大小端方式(`big`，`little`）
 
 
 
@@ -128,3 +137,4 @@
 * []增加设置条件功能
 * [tcp]增加TCP端口实现
 * []增加Value产生方法
+* []增加length addon功能

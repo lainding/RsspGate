@@ -9,12 +9,12 @@ namespace RsspGate.libs.operation.addon
     class DefaultAddon : Addon
     {
 
-        public override int GetLength()
+        public override int GetLength(byte[] stream)
         {
             return 0;
         }
 
-        public override byte[] GetValue()
+        public override byte[] GetValue(byte[] stream)
         {
             return new byte[] { };
         }

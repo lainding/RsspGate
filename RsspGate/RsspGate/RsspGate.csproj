@@ -65,7 +65,6 @@
     </Compile>
     <Compile Include="InterfaceProcess.cs" />
     <Compile Include="libs\AsyncUdpServer.cs" />
-    <Compile Include="libs\crc.cs" />
     <Compile Include="libs\crc16.cs" />
     <Compile Include="libs\crc32.cs" />
     <Compile Include="libs\DataFrame.cs" />
@@ -74,7 +73,9 @@
     <Compile Include="libs\ExceptionHandler.cs" />
     <Compile Include="libs\Gate.cs" />
     <Compile Include="libs\JSON.cs" />
+    <Compile Include="libs\operation\addon\Crc16Sum.cs" />
     <Compile Include="libs\operation\addon\DefaultAddon.cs" />
+    <Compile Include="libs\operation\addon\Length.cs" />
     <Compile Include="libs\operation\addon\Sequence.cs" />
     <Compile Include="libs\operation\addon\StaticData.cs" />
     <Compile Include="libs\operation\addon\TimeStamp.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="libs\operation\Avaliable.cs" />
     <Compile Include="libs\operation\Addon.cs" />
     <Compile Include="libs\operation\method\insert.cs" />
+    <Compile Include="libs\operation\method\rssp1.cs" />
     <Compile Include="libs\operation\Operation.cs" />
     <Compile Include="libs\operation\OperationFactory.cs" />
     <Compile Include="libs\operation\method\remove.cs" />

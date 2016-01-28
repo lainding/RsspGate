@@ -16,7 +16,7 @@ namespace RsspGate.libs.operation.addon
                 SetEndian(data.endian);
             }
         }
-        public override int GetLength()
+        public override int GetLength(byte[] stream)
         {
             return length;
         }
@@ -27,7 +27,7 @@ namespace RsspGate.libs.operation.addon
             return (int)timeSpan.TotalSeconds;
         }
 
-        public override byte[] GetValue()
+        public override byte[] GetValue(byte[] stream)
         {
             SetValue(UnixTimeNow());
             return value;

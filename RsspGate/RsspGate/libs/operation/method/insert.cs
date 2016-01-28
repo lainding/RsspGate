@@ -25,8 +25,8 @@ namespace RsspGate.libs.operation
             if (this._avaliableWidget.IsAvaliable(stream))
             {
                 var p = position;
-                var l = this._getValueWidget.GetLength();
-                var bs = this._getValueWidget.GetValue();
+                var l = this._getValueWidget.GetLength(stream);
+                var bs = this._getValueWidget.GetValue(stream);
                 if (position == -1)
                 {
                     p = stream.Length;

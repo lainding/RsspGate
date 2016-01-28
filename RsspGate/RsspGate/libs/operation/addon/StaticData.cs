@@ -88,12 +88,12 @@ namespace RsspGate.libs.operation.addon
             }
         }
 
-        public override byte[] GetValue()
+        public override byte[] GetValue(byte[] stream)
         {
             return value;
         }
 
-        public override int GetLength()
+        public override int GetLength(byte[] stream)
         {
             return length;
         }

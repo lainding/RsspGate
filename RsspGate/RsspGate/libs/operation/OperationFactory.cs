@@ -39,6 +39,12 @@ namespace RsspGate.libs.operation
                 case "sequence":
                     addon = new addon.Sequence(data);
                     break;
+                case "crc16":
+                    addon = new addon.Crc16Sum(data);
+                    break;
+                case "length":
+                    addon = new addon.Length(data);
+                    break;
             }
             return addon;
         }
@@ -63,7 +69,11 @@ namespace RsspGate.libs.operation
                     {
                         aodata = param.addon.data;
                     }
-                    var addon = GetAddon(aofun, aodata);
+                    Addon addon = GetAddon(aofun, aodata);
+                    if (param.addon.endian())
+                    {
+                        addon.SetEndian(param.addon.endian);
+                    }
                     oper.SetValueWidget(addon);
                 }
             }

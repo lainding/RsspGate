@@ -128,7 +128,7 @@ namespace RsspGate.libs.operation.addon
                 }
                 else
                 {
-                    throw new config.ConfigErrorException("Sequence only avaliable uint, ulong, ushort type.");
+                    throw new config.ConfigErrorException("Sequence only avaliable uint, ulong, ushort, byte type.");
                 }
             }
             else
@@ -185,12 +185,12 @@ namespace RsspGate.libs.operation.addon
 
 
         }
-        public override int GetLength()
+        public override int GetLength(byte[] stream)
         {
             return this.length;
         }
 
-        public override byte[] GetValue()
+        public override byte[] GetValue(byte[] stream)
         {
             var c = counter.Increase();
             switch (this.type.Name)

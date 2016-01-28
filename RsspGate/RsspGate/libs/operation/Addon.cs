@@ -73,7 +73,7 @@ namespace RsspGate.libs.operation
             }
         }
 
-        protected void SetEndian(string endian)
+        public void SetEndian(string endian)
         {
             endian = endian.Trim().ToLower();
             if (endian == "little")
@@ -252,7 +252,7 @@ namespace RsspGate.libs.operation
                 this.length = this.value.Length;
             }
         }
-        public abstract byte[] GetValue();
-        public abstract int GetLength();
+        public abstract byte[] GetValue(byte[] stream);
+        public abstract int GetLength(byte[] stream);
     }
 }

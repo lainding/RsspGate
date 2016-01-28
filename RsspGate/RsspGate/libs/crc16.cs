@@ -10,85 +10,101 @@ namespace RsspGate.libs
     {
         ushort polynomial = 0xA001;
         ushort[] table = new ushort[256];
+        bool isHighFirst = true;
 
-        public ushort ComputeChecksum(byte[] bytes)
-        {
-            ushort crc = 0;
-            for (int i = 0; i < bytes.Length; ++i)
-            {
-                byte index = (byte)(crc ^ bytes[i]);
-                crc = (ushort)((crc >> 8) ^ table[index]);
-            }
-            return crc;
-        }
-
-        public byte[] ComputeChecksumBytes(byte[] bytes)
-        {
-            ushort crc = ComputeChecksum(bytes);
-            return BitConverter.GetBytes(crc);
-        }
-
-        public crc16()
-            : this(0xA001)
-        {
-
-        }
-        public crc16(ushort polynomial)
+        public crc16(ushort polynomial, bool isHighFirst)
         {
             this.polynomial = polynomial;
-            ushort value;
-            ushort temp;
-            for (ushort i = 0; i < table.Length; ++i)
+            generate_crc_table(this.polynomial, table, false);
+        }
+
+        public crc16(ushort polynomial)
+            : this(polynomial, false)
+        {
+        }
+        private uint reflect(uint reflect, uint ch)
+        {
+            uint i = 0u;
+            uint val = 0u;
+            if (ch == 0u)
             {
-                value = 0;
-                temp = i;
-                for (byte j = 0; j < 8; ++j)
+                val = reflect;
+                return val;
+            }
+            else
+            {
+                for (i = 1u; i < (ch + 1u); ++i)
                 {
-                    if (((value ^ temp) & 0x0001) != 0)
+                    if ((uint)0u != (reflect & (uint)1))
                     {
-                        value = (ushort)((value >> 1) ^ polynomial);
+                        val |= (1u << (int)(ch - i));
                     }
-                    else
-                    {
-                        value >>= 1;
-                    }
-                    temp >>= 1;
+                    reflect >>= 1;
                 }
-                table[i] = value;
+                return val;
             }
         }
 
-        public static ulong CRC_any(byte[] blk_adr, ulong ulPoly, ulong ulInit, ulong ulXorOut, ulong ulMask)
+        private void generate_crc_table(uint polynomial, ushort[] pCRCTable, bool isHighFirst)
         {
-            ulong crc = ulInit;
-            byte ucByte;
-            int blk_len = blk_adr.Length;
-            int i;
-            bool iTopBitCRC;
-            bool iTopBitByte;
-            ulong ulTopBit;
-            if (ulMask > 0xffff)
-                ulTopBit = 0x80000000;
-            else
-                ulTopBit = ((ulMask + 1) >> 1); for (int j = 0; j < blk_len; j++)
+            int i = 0, j = 0;
+            uint crc = 0, POLY = 0;
+            if (false == isHighFirst)
             {
-                ucByte = blk_adr[j];
-                for (i = 0; i < 8; i++)
+                POLY = this.reflect(polynomial, 16u);
+                for (i = 0; i < 256; i++)
                 {
-                    iTopBitCRC = (crc & ulTopBit) != 0;
-                    iTopBitByte = (ucByte & 0x80) != 0;
-                    if (iTopBitCRC != iTopBitByte)
+                    crc = (uint)i & 0x000000ffu;
+                    for (j = 0; j < 8; j++)
                     {
-                        crc = (crc << 1) ^ ulPoly;
+                        if (0 != (crc & 0x01))
+                        {
+                            crc = (crc >> 1) ^ POLY;
+                        }
+                        else
+                        {
+                            crc >>= 1;
+                        }
                     }
-                    else
-                    {
-                        crc = (crc << 1);
-                    }
-                    ucByte <<= 1;
+                    pCRCTable[i] = (ushort)crc;
                 }
             }
-            return (ulong)((crc ^ ulXorOut) & ulMask);
+            else
+            {
+                for (i = 0; i < 256; i++)
+                {
+                    crc = (uint)(i << 8);
+                    for (j = 0; j < 8; j++)
+                    {
+                        if (0 != (crc & 0x00008000))
+                        {
+                            crc = (crc << 1) ^ polynomial;
+                        }
+                        else
+                        {
+                            crc <<= 1;
+                        }
+                    }
+                    pCRCTable[i] = (ushort)crc;
+                }
+            }
+        }
+
+        public ushort ComputeChecksum(byte[] pBuffer)
+        {
+            uint i = 0;
+            ushort x = 0;
+            for (i = 0; i < pBuffer.Length; i++)
+            {
+                x = (ushort)(table[(byte)(((1U << 8) - 1U) & (x ^ pBuffer[i]))] ^ (ushort)((ushort)(x >> 8) & 0xFFFF));
+            }
+            return x;
+        }
+
+        public byte[] ComputeChecksumBytes(byte[] pBuffer)
+        {
+            ushort crc = ComputeChecksum(pBuffer);
+            return BitConverter.GetBytes(crc);
         }
     }
 }

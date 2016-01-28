@@ -13,9 +13,6 @@ namespace RsspGate
     {
         public static void ProcessInput(object sender, DatagramReceivedEventArgs<byte[]> args)
         {
-            var a = crc16.CRC_any(args.Datagram, 0x8005, 0, 0, 0xFFFF);
-            crc32 c = new crc32(0x100D4E63);
-            
             Gate gate = sender as Gate;
             IPAddress ip = args.RemoteEndPoint.Address;
             int port = args.RemoteEndPoint.Port;

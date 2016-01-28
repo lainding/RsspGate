@@ -14,6 +14,7 @@ namespace RsspGate
     {
         public static List<Gate> gates = new List<Gate>();
         public static List<Device> devices = new List<Device>();
+        public static Dictionary<UInt16, crc16> CRC16Dict = new Dictionary<ushort, crc16>();
 
         private static bool isRunning = true;
         public static bool IsRunning

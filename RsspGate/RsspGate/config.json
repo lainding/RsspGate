@@ -40,15 +40,11 @@
 				{
 					"name": "insert",
 					"parameters": {
-						"position": 0,
+						"position": "end",
 						"addon": {
-							"function": "sequence",
+							"function": "length",
 							"data": {
-								"loop": true,
-								"type": "byte",
-								"start": 1,
-								"step": -1
-							}
+							},
 						}
 					}
 				}
