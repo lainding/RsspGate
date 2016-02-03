@@ -44,6 +44,8 @@ namespace RsspGate.libs.operation.addon
             {
                 SetEndian(data.endian);
             }
+
+            RsspGate.libs.timer.Instance.Regist();
         }
         public override int GetLength(byte[] stream)
         {
